@@ -1,7 +1,7 @@
 package com.example.application.views.main;
 
-import com.example.application.Person;
-import com.example.application.bookmanager.CrudMGR;
+import com.example.application.personFactory.Person;
+import com.example.application.bookmanager.PhoneBookManager;
 import com.vaadin.flow.component.crud.*;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
@@ -28,8 +28,8 @@ public class PhoneBookView extends Div {
         grid = new Grid<>(Person.class );
         crud = new Crud<>(Person.class, grid, createEditor());
         setupGrid();
-        crud.addSaveListener(e -> CrudMGR.addPerson(e.getItem()));
-        crud.addDeleteListener(e -> CrudMGR.deletePerson(e.getItem()));
+        crud.addSaveListener(e -> PhoneBookManager.addPerson(e.getItem()));
+        crud.addDeleteListener(e -> PhoneBookManager.deletePerson(e.getItem()));
         Crud.addEditColumn(grid);
         prepareFilterFields();
         add(crud);
@@ -67,7 +67,7 @@ public class PhoneBookView extends Div {
     }
 
     private void setupGrid() {
-        crud.setDataProvider(DataProvider.ofCollection(CrudMGR.personMap.values()));
+        crud.setDataProvider(DataProvider.ofCollection(PhoneBookManager.personMap.values()));
         grid = crud.getGrid();
 
         grid.addItemDoubleClickListener(event -> crud.edit(event.getItem(),

@@ -1,11 +1,11 @@
 package com.example.application.bookmanager;
 
-import com.example.application.Person;
+import com.example.application.personFactory.Person;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class CrudMGR {
+public class PhoneBookManager {
     public static final Map<Integer, Person> personMap = new HashMap<>(); //first field are corresponding to ID value
     public static final Map<Integer, Integer> personIDMap = new HashMap<Integer, Integer>(); //first field is id, second is PhoneNumber
 
