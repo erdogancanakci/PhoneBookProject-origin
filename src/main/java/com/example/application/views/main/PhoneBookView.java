@@ -1,5 +1,6 @@
 package com.example.application.views.main;
 
+import com.example.application.book_manager.PersonDataStorage;
 import com.example.application.person_information.Person;
 import com.example.application.book_manager.PhoneBookManager;
 import com.vaadin.flow.component.crud.*;
@@ -35,7 +36,6 @@ public class PhoneBookView extends Div {
         add(crud);
     }
 
-
     private CrudEditor<Person> createEditor() {
         final TextField name = new TextField("Name");
         final TextField lastName = new TextField("LastName");
@@ -67,7 +67,7 @@ public class PhoneBookView extends Div {
     }
 
     private void setupGrid() {
-        crud.setDataProvider(DataProvider.ofCollection(PhoneBookManager.personMap.values()));
+        crud.setDataProvider(DataProvider.ofCollection(PersonDataStorage.personMap.values()));
         grid = crud.getGrid();
 
         grid.addItemDoubleClickListener(event -> crud.edit(event.getItem(),

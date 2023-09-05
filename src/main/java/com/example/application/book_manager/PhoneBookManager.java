@@ -5,9 +5,10 @@ import com.example.application.person_information.Person;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.example.application.book_manager.PersonDataStorage.personIDMap;
+import static com.example.application.book_manager.PersonDataStorage.personMap;
+
 public class PhoneBookManager {
-    public static final Map<Integer, Person> personMap = new HashMap<>(); //first field are corresponding to ID value
-    public static final Map<Integer, Integer> personIDMap = new HashMap<Integer, Integer>(); //first field is id, second is PhoneNumber
 
     public static synchronized void addPerson(Person item) {
         if(!personIDMap.containsKey(item.getId())) {
