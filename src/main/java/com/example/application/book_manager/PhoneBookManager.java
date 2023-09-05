@@ -1,6 +1,6 @@
-package com.example.application.bookmanager;
+package com.example.application.book_manager;
 
-import com.example.application.personFactory.Person;
+import com.example.application.person_information.Person;
 
 import java.util.HashMap;
 import java.util.Map;

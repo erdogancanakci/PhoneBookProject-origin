@@ -1,7 +1,7 @@
 package com.example.application.views.main;
 
-import com.example.application.personFactory.Person;
-import com.example.application.bookmanager.PhoneBookManager;
+import com.example.application.person_information.Person;
+import com.example.application.book_manager.PhoneBookManager;
 import com.vaadin.flow.component.crud.*;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;

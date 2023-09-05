@@ -1,4 +1,4 @@
-package com.example.application.personFactory;
+package com.example.application.person_information;
 
 public class Person {
     private String name;
