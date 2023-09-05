@@ -5,7 +5,6 @@ import java.util.Random;
 import java.util.UUID;
 
 public class Person {
-    private static HashSet<Integer> hashSet = new HashSet<>();
     private String name;
     private String lastName;
     private String street;
@@ -14,9 +13,10 @@ public class Person {
     private int phoneNumber;
     private String email;
     private int id;
+    private static int counter = 0;
 
     public Person () {
-        this.id = createRandom();  //UUID or static counter can be used instead createRandom() method
+        this.id = counter++;
     }
 
     public Person(String name, String street, String lastName, String city, String country, int phoneNumber, String email) {
@@ -27,18 +27,7 @@ public class Person {
         this.country = country;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.id = createRandom();
-
-    }
-
-    private static int createRandom() {
-        Random random = new Random();
-        int data = random.nextInt(Integer.MAX_VALUE);
-
-        if(hashSet.add(data))
-            return data;
-        else
-            return createRandom();
+        this.id = counter++;
     }
 
     @Override

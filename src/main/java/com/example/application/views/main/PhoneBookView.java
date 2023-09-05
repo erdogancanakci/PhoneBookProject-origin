@@ -14,7 +14,6 @@ import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
 
-import java.sql.SQLException;
 import java.util.*;
 @Route("")
 public class PhoneBookView extends Div {
@@ -22,10 +21,10 @@ public class PhoneBookView extends Div {
     private Crud<Person> crud;
     private Grid<Person> grid;
     private final Map<Integer,Person> personMap = new HashMap<>(); //first field are corresponding to ID value
-    private final Map<Integer, Integer> phoneNumberSet = new HashMap<Integer, Integer>(); //first field is id, second is PhoneNumber
+    private final Map<Integer, Integer> personIDMap = new HashMap<Integer, Integer>(); //first field is id, second is PhoneNumber
     private TextField nameFilter, lastNameFilter, emailFilter;
 
-    public PhoneBookView() throws SQLException {
+    public PhoneBookView() {
 
         grid = new Grid<>(Person.class );
         crud = new Crud<>(Person.class, grid, createEditor());
@@ -38,20 +37,20 @@ public class PhoneBookView extends Div {
     }
 
      private synchronized void addPerson(Person item) {
-        if(!phoneNumberSet.containsKey(item.getId())) {
-            if(!phoneNumberSet.containsValue(item.getPhoneNumber())) {
+        if(!personIDMap.containsKey(item.getId())) {
+            if(!personIDMap.containsValue(item.getPhoneNumber())) {
                 personMap.put(item.getId(), item);
-                phoneNumberSet.put(item.getId(), item.getPhoneNumber());
+                personIDMap.put(item.getId(), item.getPhoneNumber());
             }
         }
         else {
-            int oldNumber = phoneNumberSet.get(item.getId());
-            if(!phoneNumberSet.containsValue(item.getPhoneNumber())) {
-                phoneNumberSet.replace(item.getId(), oldNumber, item.getPhoneNumber());
+            int oldNumber = personIDMap.get(item.getId());
+            if(!personIDMap.containsValue(item.getPhoneNumber())) {
+                personIDMap.replace(item.getId(), oldNumber, item.getPhoneNumber());
                 item.setPhoneNumber(item.getPhoneNumber());
             }
             else {
-                phoneNumberSet.replace(item.getId(), oldNumber, oldNumber);
+                personIDMap.replace(item.getId(), oldNumber, oldNumber);
                 item.setPhoneNumber(oldNumber);
             }
         }
@@ -60,7 +59,7 @@ public class PhoneBookView extends Div {
 
      private synchronized void deletePerson(Person item) {
         personMap.remove(item.getId(), item);
-        phoneNumberSet.remove(item.getId());
+        personIDMap.remove(item.getId());
     }
 
     private CrudEditor<Person> createEditor() {
