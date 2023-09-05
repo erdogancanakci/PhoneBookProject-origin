@@ -20,8 +20,6 @@ public class PhoneBookView extends Div {
 
     private Crud<Person> crud;
     private Grid<Person> grid;
-    private final Map<Integer,Person> personMap = new HashMap<>(); //first field are corresponding to ID value
-    private final Map<Integer, Integer> personIDMap = new HashMap<Integer, Integer>(); //first field is id, second is PhoneNumber
     private TextField nameFilter, lastNameFilter, emailFilter;
 
     public PhoneBookView() {
@@ -29,38 +27,13 @@ public class PhoneBookView extends Div {
         grid = new Grid<>(Person.class );
         crud = new Crud<>(Person.class, grid, createEditor());
         setupGrid();
-        crud.addSaveListener(e -> addPerson(e.getItem()));
-        crud.addDeleteListener(e -> deletePerson(e.getItem()));
+        crud.addSaveListener(e -> CrudMGR.addPerson(e.getItem()));
+        crud.addDeleteListener(e -> CrudMGR.deletePerson(e.getItem()));
         Crud.addEditColumn(grid);
         prepareFilterFields();
         add(crud);
     }
 
-     private synchronized void addPerson(Person item) {
-        if(!personIDMap.containsKey(item.getId())) {
-            if(!personIDMap.containsValue(item.getPhoneNumber())) {
-                personMap.put(item.getId(), item);
-                personIDMap.put(item.getId(), item.getPhoneNumber());
-            }
-        }
-        else {
-            int oldNumber = personIDMap.get(item.getId());
-            if(!personIDMap.containsValue(item.getPhoneNumber())) {
-                personIDMap.replace(item.getId(), oldNumber, item.getPhoneNumber());
-                item.setPhoneNumber(item.getPhoneNumber());
-            }
-            else {
-                personIDMap.replace(item.getId(), oldNumber, oldNumber);
-                item.setPhoneNumber(oldNumber);
-            }
-        }
-         grid.setDataProvider(grid.getDataProvider());
-     }
-
-     private synchronized void deletePerson(Person item) {
-        personMap.remove(item.getId(), item);
-        personIDMap.remove(item.getId());
-    }
 
     private CrudEditor<Person> createEditor() {
         final TextField name = new TextField("Name");
@@ -93,7 +66,7 @@ public class PhoneBookView extends Div {
     }
 
     private void setupGrid() {
-        crud.setDataProvider(DataProvider.ofCollection(personMap.values()));
+        crud.setDataProvider(DataProvider.ofCollection(CrudMGR.personMap.values()));
         grid = crud.getGrid();
 
         grid.addItemDoubleClickListener(event -> crud.edit(event.getItem(),

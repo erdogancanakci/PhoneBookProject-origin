@@ -26,7 +26,6 @@ public class Person {
         this.id = counter++;
     }
 
-
     public int getId() {
         return id;
     }
