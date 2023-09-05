@@ -12,7 +12,7 @@ public class PhoneBookManager {
             if(!personIDMap.containsValue(item.getPhoneNumber())) {
                 personMap.put(item.getId(), item);
                 personIDMap.put(item.getId(), item.getPhoneNumber());
-                Notification.show("the person " +item.getName() +"added to phonebook", 5000, Notification.Position.MIDDLE);
+                Notification.show("the person " +item.getName() +" is added to phonebook", 5000, Notification.Position.MIDDLE);
             }
         }
         else {
