@@ -1,9 +1,5 @@
 package com.example.application;
 
-import java.util.HashSet;
-import java.util.Random;
-import java.util.UUID;
-
 public class Person {
     private String name;
     private String lastName;
@@ -30,20 +26,6 @@ public class Person {
         this.id = counter++;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Person person = (Person) o;
-
-        return phoneNumber == person.phoneNumber;
-    }
-
-    @Override
-    public int hashCode() {
-        return phoneNumber;
-    }
 
     public int getId() {
         return id;
