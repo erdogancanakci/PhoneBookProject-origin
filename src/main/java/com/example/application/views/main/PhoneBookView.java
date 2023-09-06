@@ -2,6 +2,7 @@ package com.example.application.views.main;
 
 import com.example.application.book_manager.PersonDataStorage;
 import com.example.application.person_information.Person;
+import com.example.application.person_information.RandomPersonGenerator;
 import com.example.application.book_manager.PhoneBookManager;
 import com.vaadin.flow.component.crud.*;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -23,15 +24,18 @@ public class PhoneBookView extends Div {
     private Grid<Person> grid;
     private TextField nameFilter, lastNameFilter, emailFilter;
 
+
     public PhoneBookView() {
         grid = new Grid<>(Person.class );
         crud = new Crud<>(Person.class, grid, createEditor());
         setupGrid();
+        grid.setPageSize(10);
         crud.addSaveListener(e -> PhoneBookManager.savePerson(e.getItem()));
         crud.addDeleteListener(e -> PhoneBookManager.deletePerson(e.getItem()));
         Crud.addEditColumn(grid);
         prepareFilterFields();
         add(crud);
+        RandomPersonGenerator.getInstance();
     }
 
     private CrudEditor<Person> createEditor() {
