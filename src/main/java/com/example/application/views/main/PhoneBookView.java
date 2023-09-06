@@ -24,12 +24,10 @@ public class PhoneBookView extends Div {
     private Grid<Person> grid;
     private TextField nameFilter, lastNameFilter, emailFilter;
 
-
     public PhoneBookView() {
         grid = new Grid<>(Person.class );
         crud = new Crud<>(Person.class, grid, createEditor());
         setupGrid();
-        grid.setPageSize(10);
         crud.addSaveListener(e -> PhoneBookManager.savePerson(e.getItem()));
         crud.addDeleteListener(e -> PhoneBookManager.deletePerson(e.getItem()));
         Crud.addEditColumn(grid);

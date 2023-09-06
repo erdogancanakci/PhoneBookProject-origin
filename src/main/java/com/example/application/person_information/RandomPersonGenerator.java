@@ -16,8 +16,8 @@ public class RandomPersonGenerator {
         }
         return instance;
     }
-    private static final String ALPHABET_CAPITAL = "ABCDEFGHIJKLMNOPQRSTUWXVYZ";
-    private static final String ALPHABET = "abcdefghijklmnopqrstuwxvyz";
+    private static final String ALPHABET_CAPITAL_EN = "ABCDEFGHIJKLMNOPQRSTUWXVYZ";
+    private static final String ALPHABET_EN = "abcdefghijklmnopqrstuwxvyz";
 
     private static void createRandomPerson() {
         createRandomPerson(personCount);

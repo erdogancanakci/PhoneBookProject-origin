@@ -8,7 +8,6 @@ import static com.example.application.book_manager.PersonDataStorage.*;
 
 public class PhoneBookManager {
 
-
     public static synchronized void savePerson(Person item) {
 
         if(isIDUnique(item.getId()) ) {
