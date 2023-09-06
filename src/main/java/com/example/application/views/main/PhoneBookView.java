@@ -19,13 +19,11 @@ import com.vaadin.flow.router.Route;
 import java.util.*;
 @Route("")
 public class PhoneBookView extends Div {
-
     private Crud<Person> crud;
     private Grid<Person> grid;
     private TextField nameFilter, lastNameFilter, emailFilter;
 
     public PhoneBookView() {
-
         grid = new Grid<>(Person.class );
         crud = new Crud<>(Person.class, grid, createEditor());
         setupGrid();
@@ -67,7 +65,7 @@ public class PhoneBookView extends Div {
     }
 
     private void setupGrid() {
-        crud.setDataProvider(DataProvider.ofCollection(PersonDataStorage.personMap.values()));
+        crud.setDataProvider(DataProvider.ofCollection(PersonDataStorage.getPersonMap().values()));
         grid = crud.getGrid();
 
         grid.addItemDoubleClickListener(event -> crud.edit(event.getItem(),
@@ -119,7 +117,6 @@ public class PhoneBookView extends Div {
             if(!emailFilter.isEmpty()){
                 emailFilterMatch = person.getEmail().toLowerCase().contains(emailFilter.getValue());
             }
-
             return nameMatch && lastNameFilterMatch && emailFilterMatch;
         });
     }

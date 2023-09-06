@@ -6,7 +6,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PersonDataStorage {
-    public static final Map<Integer, Person> personMap = new HashMap<>(); //first field are corresponding to ID value
-    public static final Map<Integer, Integer> personIDMap = new HashMap<Integer, Integer>(); //first field is id, second is PhoneNumber
+    private static final Map<Integer, Person> personMap = new HashMap<>();
+    private static final Map<Integer, Integer> personIDMap = new HashMap<Integer, Integer>();
+
+    public static Map<Integer, Person> getPersonMap() {
+        return personMap;
+    }
+
+    public static Map<Integer, Integer> getPersonIDMap() {
+        return personIDMap;
+    }
 
 }
