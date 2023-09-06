@@ -1,8 +1,8 @@
-package com.example.application.views;
+package com.example.application.view;
 
 import com.example.application.book_manager.PersonDataStorage;
 import com.example.application.person_information.Person;
-import com.example.application.person_information.RandomPersonGenerator;
+import com.example.application.person_provider.RandomPersonGenerator;
 import com.example.application.book_manager.PhoneBookManager;
 import com.vaadin.flow.component.crud.*;
 import com.vaadin.flow.component.formlayout.FormLayout;

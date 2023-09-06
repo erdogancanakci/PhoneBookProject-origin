@@ -1,10 +1,12 @@
-package com.example.application.person_information;
+package com.example.application.person_provider;
 
 import com.example.application.book_manager.PersonDataStorage;
+import com.example.application.person_information.Person;
+
 import java.util.Random;
 
 public class RandomPersonGenerator {
-    private static final int personCount = 10;
+    private static final int personCount = 100;
     private static final String ALPHABET_CAPITAL_EN = "ABCDEFGHIJKLMNOPQRSTUWXVYZ";
     private static final String ALPHABET_EN = "abcdefghijklmnopqrstuwxvyz";
     private static RandomPersonGenerator instance;
