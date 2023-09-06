@@ -1,4 +1,4 @@
-package com.example.application.views.main;
+package com.example.application.views;
 
 import com.example.application.book_manager.PersonDataStorage;
 import com.example.application.person_information.Person;
