@@ -2,12 +2,9 @@ package com.example.application.book_manager;
 
 import com.example.application.person_information.Person;
 import com.vaadin.flow.component.notification.Notification;
-
-
 import static com.example.application.book_manager.PersonDataStorage.*;
 
 public class PhoneBookManager {
-
     public static synchronized void saveOrUpdatePerson(Person item) {
 
         if(isIDUnique(item.getId()) ) {
@@ -44,7 +41,7 @@ public class PhoneBookManager {
         }
         else {
             item.setPhoneNumber(oldNumber);
-            showNotification("Person information is updated");
+            showNotification("Person's information is updated");
         }
     }
 
@@ -59,4 +56,5 @@ public class PhoneBookManager {
     private static void showNotification(String message) {
         Notification.show(message, 5000, Notification.Position.MIDDLE);
     }
+
 }
