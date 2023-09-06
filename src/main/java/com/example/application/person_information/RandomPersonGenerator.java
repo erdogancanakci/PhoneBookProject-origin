@@ -48,7 +48,7 @@ public class RandomPersonGenerator {
         Random r = new Random();
         char c;
         for(int i = 0; i < count; i++) {
-            c = ALPHABET.charAt(r.nextInt(26));
+            c = ALPHABET_EN.charAt(r.nextInt(26));
             sb.append(c);
         }
         return sb.toString();
