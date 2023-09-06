@@ -28,8 +28,8 @@ public class PhoneBookView extends Div {
         grid = new Grid<>(Person.class );
         crud = new Crud<>(Person.class, grid, createEditor());
         setupGrid();
-        crud.addSaveListener(e -> PhoneBookManager.savePerson(e.getItem()));
-        crud.addDeleteListener(e -> PhoneBookManager.deletePerson(e.getItem()));
+        crud.addSaveListener(e -> PhoneBookManager.saveOrUpdatePerson(e.getItem()));
+        crud.addDeleteListener(e -> PhoneBookManager.removePerson(e.getItem()));
         Crud.addEditColumn(grid);
         prepareFilterFields();
         add(crud);

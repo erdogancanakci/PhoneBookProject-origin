@@ -4,8 +4,10 @@ import com.example.application.book_manager.PersonDataStorage;
 import java.util.Random;
 
 public class RandomPersonGenerator {
-    private static RandomPersonGenerator instance;
     private static final int personCount = 10;
+    private static final String ALPHABET_CAPITAL_EN = "ABCDEFGHIJKLMNOPQRSTUWXVYZ";
+    private static final String ALPHABET_EN = "abcdefghijklmnopqrstuwxvyz";
+    private static RandomPersonGenerator instance;
     private RandomPersonGenerator() {
     }
 
@@ -16,8 +18,6 @@ public class RandomPersonGenerator {
         }
         return instance;
     }
-    private static final String ALPHABET_CAPITAL_EN = "ABCDEFGHIJKLMNOPQRSTUWXVYZ";
-    private static final String ALPHABET_EN = "abcdefghijklmnopqrstuwxvyz";
 
     private static void createRandomPerson() {
         createRandomPerson(personCount);
