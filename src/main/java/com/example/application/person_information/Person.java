@@ -8,7 +8,7 @@ public class Person {
     private String country;
     private int phoneNumber;
     private String email;
-    private int id;
+    private final int id;
     private static int counter = 0;
 
     public Person () {

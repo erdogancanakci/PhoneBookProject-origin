@@ -27,7 +27,7 @@ public class PhoneBookView extends Div {
         grid = new Grid<>(Person.class );
         crud = new Crud<>(Person.class, grid, createEditor());
         setupGrid();
-        crud.addSaveListener(e -> PhoneBookManager.addPerson(e.getItem()));
+        crud.addSaveListener(e -> PhoneBookManager.savePerson(e.getItem()));
         crud.addDeleteListener(e -> PhoneBookManager.deletePerson(e.getItem()));
         Crud.addEditColumn(grid);
         prepareFilterFields();
@@ -56,7 +56,7 @@ public class PhoneBookView extends Div {
                 Person::setCity);
         binder.forField(country).asRequired("country must be entered").bind(Person::getCountry,
                 Person::setCountry);
-        binder.forField(phoneNumber).asRequired("phonenumber must be entered").bind(Person::getPhoneNumber,
+        binder.forField(phoneNumber).asRequired().bind(Person::getPhoneNumber,
                 Person::setPhoneNumber);
         binder.forField(email).asRequired("email must be entered").bind(Person::getEmail,
                 Person::setEmail);
