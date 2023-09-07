@@ -6,7 +6,7 @@ import com.example.application.person_information.Person;
 import java.util.Random;
 
 public class RandomPersonGenerator {
-    private static final int personCount = 1000000;
+    private static final int personCount = 100000;
     private static final String ALPHABET_CAPITAL_EN = "ABCDEFGHIJKLMNOPQRSTUWXVYZ";
     private static final String ALPHABET_EN = "abcdefghijklmnopqrstuwxvyz";
     private static RandomPersonGenerator instance;

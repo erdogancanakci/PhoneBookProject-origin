@@ -13,12 +13,14 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.data.provider.CallbackDataProvider;
 import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Route("")
 public class PhoneBookView extends Div {
@@ -125,22 +127,39 @@ public class PhoneBookView extends Div {
     }
 
     private void onFilterChange() {
-        ListDataProvider<Person> listDataProvider = (ListDataProvider<Person>) grid.getDataProvider();
+        String nameFilterText = nameFilter.getValue().toLowerCase();
+        String lastNameFilterText = lastNameFilter.getValue().toLowerCase();
+        String emailFilterText = emailFilter.getValue().toLowerCase();
 
-        listDataProvider.setFilter(person -> {
-            boolean nameMatch = true;
-            boolean lastNameFilterMatch = true;
-            boolean emailFilterMatch = true;
-            if(!nameFilter.isEmpty()){
-                nameMatch = person.getName().toLowerCase().contains(nameFilter.getValue());
-            }
-            if(!lastNameFilter.isEmpty()){
-                lastNameFilterMatch = person.getLastName().toLowerCase().contains(lastNameFilter.getValue());
-            }
-            if(!emailFilter.isEmpty()){
-                emailFilterMatch = person.getEmail().toLowerCase().contains(emailFilter.getValue());
-            }
-            return nameMatch && lastNameFilterMatch && emailFilterMatch;
-        });
+        CallbackDataProvider<Person, Void> dataProvider = DataProvider
+                .fromFilteringCallbacks(
+                        query -> {
+                            List<Person> filteredPersons = PersonDataStorage.getPersonMap().values().stream()
+                                    .filter(person -> {
+                                        boolean nameMatch = person.getName().toLowerCase().contains(nameFilterText);
+                                        boolean lastNameMatch = person.getLastName().toLowerCase().contains(lastNameFilterText);
+                                        boolean emailMatch = person.getEmail().toLowerCase().contains(emailFilterText);
+                                        return nameMatch && lastNameMatch && emailMatch;
+                                    })
+                                    .skip(query.getOffset())
+                                    .limit(query.getLimit())
+                                    .collect(Collectors.toList());
+
+                            return filteredPersons.stream();
+                        },
+                        query -> {
+                            long totalCount = PersonDataStorage.getPersonMap().values().stream()
+                                    .filter(person -> {
+                                        boolean nameMatch = person.getName().toLowerCase().contains(nameFilterText);
+                                        boolean lastNameMatch = person.getLastName().toLowerCase().contains(lastNameFilterText);
+                                        boolean emailMatch = person.getEmail().toLowerCase().contains(emailFilterText);
+                                        return nameMatch && lastNameMatch && emailMatch;
+                                    })
+                                    .count();
+
+                            return (int) totalCount;
+                        });
+
+        grid.setDataProvider(dataProvider);
     }
 }
