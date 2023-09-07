@@ -9,16 +9,16 @@ public class RandomPersonGenerator {
     private static final int personCount = 100000;
     private static final String ALPHABET_CAPITAL_EN = "ABCDEFGHIJKLMNOPQRSTUWXVYZ";
     private static final String ALPHABET_EN = "abcdefghijklmnopqrstuwxvyz";
-    private static RandomPersonGenerator instance;
+    private static RandomPersonGenerator randomPersonGenerator;
     private RandomPersonGenerator() {
     }
 
-    public static RandomPersonGenerator getInstance()  {
-        if(instance == null) {
-            instance = new RandomPersonGenerator();
+    public static RandomPersonGenerator randomPersonGenerator()  {
+        if(randomPersonGenerator == null) {
+            randomPersonGenerator = new RandomPersonGenerator();
             createRandomPerson();
         }
-        return instance;
+        return randomPersonGenerator;
     }
 
     private static void createRandomPerson() {

@@ -15,7 +15,6 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.provider.CallbackDataProvider;
 import com.vaadin.flow.data.provider.DataProvider;
-import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
 
@@ -37,7 +36,7 @@ public class PhoneBookView extends Div {
         Crud.addEditColumn(grid);
         prepareFilterFields();
         add(crud);
-        RandomPersonGenerator.getInstance();
+        RandomPersonGenerator.randomPersonGenerator();
 
     }
 
@@ -102,6 +101,7 @@ public class PhoneBookView extends Div {
                 );
 
         grid.setPageSize(60);
+        grid.setSizeFull();
         grid.setDataProvider(dataProvider);
 
         grid.setColumnOrder(grid.getColumnByKey("name"),
