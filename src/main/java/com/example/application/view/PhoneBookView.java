@@ -2,6 +2,7 @@ package com.example.application.view;
 
 import com.example.application.book_manager.PersonDataStorage;
 import com.example.application.person_information.Person;
+import com.example.application.person_provider.PersonService;
 import com.example.application.person_provider.RandomPersonGenerator;
 import com.example.application.book_manager.PhoneBookManager;
 import com.vaadin.flow.component.crud.*;
@@ -18,6 +19,7 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
 
 import java.util.*;
+
 @Route("")
 public class PhoneBookView extends Div {
     private Crud<Person> crud;
@@ -34,6 +36,7 @@ public class PhoneBookView extends Div {
         prepareFilterFields();
         add(crud);
         RandomPersonGenerator.getInstance();
+
     }
 
     private CrudEditor<Person> createEditor() {
@@ -70,6 +73,7 @@ public class PhoneBookView extends Div {
         crud.setDataProvider(DataProvider.ofCollection(PersonDataStorage.getPersonMap().values()));
         grid = crud.getGrid();
 
+
         grid.addItemDoubleClickListener(event -> crud.edit(event.getItem(),
                 Crud.EditMode.EXISTING_ITEM));
 
@@ -80,6 +84,23 @@ public class PhoneBookView extends Div {
                 grid.removeColumn(column);
             }
         });
+
+        DataProvider<Person, Void> dataProvider =
+                DataProvider.fromCallbacks(
+                        query -> {
+                            int offset = query.getOffset();
+
+                            int limit = query.getLimit();
+
+                            List<Person> persons = PersonService.getPersonAsSublist(offset, limit);
+
+                            return persons.stream();
+                        },
+                        query -> PersonService.getCount()
+                );
+
+        grid.setPageSize(60);
+        grid.setDataProvider(dataProvider);
 
         grid.setColumnOrder(grid.getColumnByKey("name"),
                 grid.getColumnByKey("lastName"),
