@@ -97,18 +97,18 @@ public class PhoneBookView extends Div {
         DataProvider<Person, Void> dataProvider =
                 DataProvider.fromCallbacks(
                         query -> {
+
                             int offset = query.getOffset();
 
                             int limit = query.getLimit();
+                            List<Person> allPersons = new ArrayList<>(PersonDataStorage.getPersonIDtoPerson().values()).subList(offset, offset + limit);
+                            return allPersons.stream();
 
-                            List<Person> persons = PersonService.getPersonAsSublist(offset, limit);
-
-                            return persons.stream();
                         },
                         query -> PersonService.getPersonIDToPersonSize()
                 );
 
-        grid.setPageSize(60);
+        grid.setPageSize(6);
         grid.setDataProvider(dataProvider);
 
         grid.setColumnOrder(grid.getColumnByKey("name"),

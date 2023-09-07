@@ -9,11 +9,6 @@ public class PersonService {
     private PersonService () {
     }
 
-    public static List<Person> getPersonAsSublist(int page, int pageSize) {
-        List<Person> allPersons = new ArrayList<>(PersonDataStorage.getPersonIDtoPerson().values());
-        return allPersons.subList(page * pageSize, Math.min(page * pageSize + pageSize, allPersons.size()));
-    }
-
     public static int getPersonIDToPersonSize() {
         return new ArrayList<>(PersonDataStorage.getPersonIDtoPerson().values()).size();
     }
