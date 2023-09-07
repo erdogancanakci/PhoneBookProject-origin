@@ -14,7 +14,7 @@ public class PersonService {
         return allPersons.subList(page * pageSize, Math.min(page * pageSize + pageSize, allPersons.size()));
     }
 
-    public static int getCount() {
+    public static int getPersonIDToPersonSize() {
         return new ArrayList<>(PersonDataStorage.getPersonIDtoPerson().values()).size();
     }
 

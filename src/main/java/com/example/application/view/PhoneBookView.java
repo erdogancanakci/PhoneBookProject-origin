@@ -97,7 +97,7 @@ public class PhoneBookView extends Div {
 
                             return persons.stream();
                         },
-                        query -> PersonService.getCount()
+                        query -> PersonService.getPersonIDToPersonSize()
                 );
 
         grid.setPageSize(60);
