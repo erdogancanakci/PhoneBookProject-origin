@@ -1,7 +1,7 @@
-package com.example.application.person_provider;
+package com.example.application.person_util;
 
-import com.example.application.book_manager.PersonDataStorage;
-import com.example.application.person_information.Person;
+import com.example.application.storage.PersonDataStorage;
+import com.example.application.data.Person;
 
 import java.util.Random;
 
@@ -36,8 +36,8 @@ public class RandomPersonGenerator {
             person.setPhoneNumber(getRandomNumber());
             person.setCountry(getRandomText());
 
-            PersonDataStorage.getPersonMap().put(person.getId(), person);
-            PersonDataStorage.getPersonIDMap().put(person.getId(), person.getPhoneNumber());
+            PersonDataStorage.getPersonIDtoPerson().put(person.getId(), person);
+            PersonDataStorage.getPersonIDtoPersonPhone().put(person.getId(), person.getPhoneNumber());
         }
     }
 

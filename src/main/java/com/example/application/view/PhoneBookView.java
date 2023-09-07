@@ -1,9 +1,9 @@
 package com.example.application.view;
 
-import com.example.application.book_manager.PersonDataStorage;
-import com.example.application.person_information.Person;
-import com.example.application.person_provider.PersonService;
-import com.example.application.person_provider.RandomPersonGenerator;
+import com.example.application.storage.PersonDataStorage;
+import com.example.application.data.Person;
+import com.example.application.person_util.PersonService;
+import com.example.application.person_util.RandomPersonGenerator;
 import com.example.application.book_manager.PhoneBookManager;
 import com.vaadin.flow.component.crud.*;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -71,7 +71,7 @@ public class PhoneBookView extends Div {
     }
 
     private void setupGrid() {
-        crud.setDataProvider(DataProvider.ofCollection(PersonDataStorage.getPersonMap().values()));
+        crud.setDataProvider(DataProvider.ofCollection(PersonDataStorage.getPersonIDtoPerson().values()));
         grid = crud.getGrid();
 
 
@@ -101,7 +101,6 @@ public class PhoneBookView extends Div {
                 );
 
         grid.setPageSize(60);
-        grid.setSizeFull();
         grid.setDataProvider(dataProvider);
 
         grid.setColumnOrder(grid.getColumnByKey("name"),
@@ -134,7 +133,7 @@ public class PhoneBookView extends Div {
         CallbackDataProvider<Person, Void> dataProvider = DataProvider
                 .fromFilteringCallbacks(
                         query -> {
-                            List<Person> filteredPersons = PersonDataStorage.getPersonMap().values().stream()
+                            List<Person> filteredPersons = PersonDataStorage.getPersonIDtoPerson().values().stream()
                                     .filter(person -> {
                                         boolean nameMatch = person.getName().toLowerCase().contains(nameFilterText);
                                         boolean lastNameMatch = person.getLastName().toLowerCase().contains(lastNameFilterText);
@@ -148,7 +147,7 @@ public class PhoneBookView extends Div {
                             return filteredPersons.stream();
                         },
                         query -> {
-                            long totalCount = PersonDataStorage.getPersonMap().values().stream()
+                            long totalCount = PersonDataStorage.getPersonIDtoPerson().values().stream()
                                     .filter(person -> {
                                         boolean nameMatch = person.getName().toLowerCase().contains(nameFilterText);
                                         boolean lastNameMatch = person.getLastName().toLowerCase().contains(lastNameFilterText);

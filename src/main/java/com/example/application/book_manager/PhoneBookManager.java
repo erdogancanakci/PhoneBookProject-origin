@@ -1,8 +1,8 @@
 package com.example.application.book_manager;
 
-import com.example.application.person_information.Person;
+import com.example.application.data.Person;
 import com.vaadin.flow.component.notification.Notification;
-import static com.example.application.book_manager.PersonDataStorage.*;
+import static com.example.application.storage.PersonDataStorage.*;
 
 public class PhoneBookManager {
     public static synchronized void saveOrUpdatePerson(Person item) {
@@ -21,36 +21,36 @@ public class PhoneBookManager {
     }
 
     public static synchronized void removePerson(Person item) {
-        getPersonMap().remove(item.getId(), item);
-        getPersonIDMap().remove(item.getId());
+        getPersonIDtoPerson().remove(item.getId(), item);
+        getPersonIDtoPersonPhone().remove(item.getId());
         showNotification("the person " +item.getName() +" is removed from phonebook");
     }
 
     public static synchronized void addPerson(Person item) {
-        getPersonMap().put(item.getId(), item);
-        getPersonIDMap().put(item.getId(), item.getPhoneNumber());
+        getPersonIDtoPerson().put(item.getId(), item);
+        getPersonIDtoPersonPhone().put(item.getId(), item.getPhoneNumber());
         showNotification("the person " +item.getName() +" is added to phonebook");
     }
 
     private static synchronized void updatePerson(Person item) {
-        int oldNumber = getPersonIDMap().get(item.getId());
+        int oldNumber = getPersonIDtoPersonPhone().get(item.getId());
         if(isPhoneNumberUnique(item.getPhoneNumber())) {
-            getPersonIDMap().replace(item.getId(), oldNumber, item.getPhoneNumber());
+            getPersonIDtoPersonPhone().replace(item.getId(), oldNumber, item.getPhoneNumber());
             item.setPhoneNumber(item.getPhoneNumber());
             showNotification("the person's number is updated");
         }
         else {
             item.setPhoneNumber(oldNumber);
-            showNotification("Person's information is updated");
+            showNotification("phone number must be unique");
         }
     }
 
     public static boolean isPhoneNumberUnique(int phoneNumber) {
-        return !getPersonIDMap().containsValue(phoneNumber);
+        return !getPersonIDtoPersonPhone().containsValue(phoneNumber);
     }
 
     public static boolean isIDUnique(int id) {
-        return !getPersonIDMap().containsKey(id);
+        return !getPersonIDtoPersonPhone().containsKey(id);
     }
 
     private static void showNotification(String message) {
