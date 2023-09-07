@@ -57,6 +57,6 @@ public class RandomPersonGenerator {
 
     private static int getRandomNumber() {
         Random r = new Random();
-        return r.nextInt(100000,999999);
+        return r.nextInt(1000000,9999999);
     }
 }

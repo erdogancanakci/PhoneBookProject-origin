@@ -34,7 +34,7 @@ public class PhoneBookManager {
 
     private static synchronized void updatePerson(Person item) {
         int oldNumber = getPersonIDtoPersonPhone().get(item.getId());
-        if(isPhoneNumberUnique(item.getPhoneNumber())) {
+        if(oldNumber == item.getPhoneNumber() || isPhoneNumberUnique(item.getPhoneNumber())) {
             getPersonIDtoPersonPhone().replace(item.getId(), oldNumber, item.getPhoneNumber());
             item.setPhoneNumber(item.getPhoneNumber());
             showNotification("the person's information is updated");
