@@ -36,7 +36,7 @@ public class PhoneBookView extends Div {
         Crud.addEditColumn(grid);
         prepareFilterFields();
         add(crud);
-        RandomPersonGenerator.randomPersonGenerator();
+        RandomPersonGenerator.getPersonGenerator();
 
     }
 

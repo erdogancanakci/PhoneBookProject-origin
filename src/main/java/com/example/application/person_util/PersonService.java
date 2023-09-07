@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PersonService {
+    private PersonService () {
+    }
 
     public static List<Person> getPersonAsSublist(int page, int pageSize) {
         List<Person> allPersons = new ArrayList<>(PersonDataStorage.getPersonIDtoPerson().values());

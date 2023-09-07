@@ -2,7 +2,6 @@ package com.example.application.person_util;
 
 import com.example.application.storage.PersonDataStorage;
 import com.example.application.data.Person;
-
 import java.util.Random;
 
 public class RandomPersonGenerator {
@@ -13,7 +12,7 @@ public class RandomPersonGenerator {
     private RandomPersonGenerator() {
     }
 
-    public static RandomPersonGenerator randomPersonGenerator()  {
+    public static RandomPersonGenerator getPersonGenerator()  {
         if(randomPersonGenerator == null) {
             randomPersonGenerator = new RandomPersonGenerator();
             createRandomPerson();

@@ -37,7 +37,7 @@ public class PhoneBookManager {
         if(isPhoneNumberUnique(item.getPhoneNumber())) {
             getPersonIDtoPersonPhone().replace(item.getId(), oldNumber, item.getPhoneNumber());
             item.setPhoneNumber(item.getPhoneNumber());
-            showNotification("the person's number is updated");
+            showNotification("the person's information is updated");
         }
         else {
             item.setPhoneNumber(oldNumber);
