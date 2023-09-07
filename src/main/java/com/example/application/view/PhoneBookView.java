@@ -150,7 +150,7 @@ public class PhoneBookView extends Div {
                                     })
                                     .skip(query.getOffset())
                                     .limit(query.getLimit())
-                                    .collect(Collectors.toList());
+                                    .toList();
 
                             return filteredPersons.stream();
                         },
