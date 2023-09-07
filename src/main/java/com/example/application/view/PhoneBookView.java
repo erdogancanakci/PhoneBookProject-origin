@@ -10,6 +10,7 @@ import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.HeaderRow;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
@@ -78,6 +79,10 @@ public class PhoneBookView extends Div {
         grid.addItemDoubleClickListener(event -> crud.edit(event.getItem(),
                 Crud.EditMode.EXISTING_ITEM));
 
+        grid.setWidthFull();
+        grid.setHeightFull();
+
+
         List<String> visibleColumns = Arrays.asList("name", "lastName", "email");
         grid.getColumns().forEach(column -> {
             String key = column.getKey();
@@ -85,6 +90,9 @@ public class PhoneBookView extends Div {
                 grid.removeColumn(column);
             }
         });
+  
+
+
 
         DataProvider<Person, Void> dataProvider =
                 DataProvider.fromCallbacks(
