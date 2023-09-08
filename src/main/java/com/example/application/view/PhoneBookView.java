@@ -31,9 +31,16 @@ public class PhoneBookView extends Div {
     public PhoneBookView() {
         grid = new Grid<>(Person.class );
         crud = new Crud<>(Person.class, grid, createEditor());
+
         setupGrid();
         Crud.addEditColumn(grid);
+        addListener();
+        prepareFilterFields();
+        add(crud);
+        PersonDataProvider.getPersonDataProvider();
+    }
 
+    private void addListener () {
         crud.addCancelListener(e -> {
             isEditMode = false;
         });
@@ -56,10 +63,6 @@ public class PhoneBookView extends Div {
             PhoneBookManager.removePerson(e.getItem());
             isEditMode = false;
         });
-
-        prepareFilterFields();
-        add(crud);
-        PersonDataProvider.getPersonDataProvider();
     }
 
     private CrudEditor<Person> createEditor() {
@@ -181,4 +184,5 @@ public class PhoneBookView extends Div {
 
         grid.setDataProvider(dataProvider);
     }
+
 }
