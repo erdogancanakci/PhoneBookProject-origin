@@ -8,7 +8,7 @@ public class PersonService {
     }
 
     public static int getPersonIDToPersonMapSize() {
-        return new ArrayList<>(PersonDataStorage.getIDtoPersonMap().values()).size();
+        return new ArrayList<>(PersonDataStorage.getIdToPersonMap().values()).size();
     }
 
 }
