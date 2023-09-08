@@ -5,7 +5,7 @@ import com.example.application.storage.PersonDataStorage;
 import java.util.Random;
 
 public class PersonDataProvider {
-    private static final int personCount = 1000000;
+    private static final int personCount = 5;
     private static final String ALPHABET_EN = "abcdefghijklmnopqrstuwxvyz";
     private static PersonDataProvider personDataProvider;
     private PersonDataProvider() {
@@ -34,8 +34,8 @@ public class PersonDataProvider {
             person.setPhoneNumber(getRandomNumber());
             person.setCountry(getRandomText());
 
-            PersonDataStorage.getPersonIDtoPerson().put(person.getId(), person);
-            PersonDataStorage.getPersonIDtoPersonPhone().put(person.getId(), person.getPhoneNumber());
+            PersonDataStorage.getIDtoPhone().put(person.getId(), person.getPhoneNumber());
+            PersonDataStorage.getIDtoPerson().put(person.getId(), person);
         }
     }
 

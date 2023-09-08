@@ -5,38 +5,29 @@ import com.vaadin.flow.component.notification.Notification;
 import static com.example.application.storage.PersonDataStorage.*;
 
 public class PhoneBookManager {
-    public static synchronized void saveOrUpdatePerson(Person item) {
-
-        if(isIDUnique(item.getId()) ) {
-            if(isPhoneNumberUnique(item.getPhoneNumber())) {
-                addPerson(item);
-            }
-            else {
-                showNotification("Phone number must be unique");
-            }
-        }
-        else {
-            updatePerson(item);
-        }
-    }
 
     public static synchronized void removePerson(Person item) {
-        getPersonIDtoPerson().remove(item.getId(), item);
-        getPersonIDtoPersonPhone().remove(item.getId());
+        getIDtoPerson().remove(item.getId());
+        getIDtoPerson().remove(item.getId());
         showNotification("The person " +item.getName() +" is removed from phonebook");
     }
 
     public static synchronized void addPerson(Person item) {
-        getPersonIDtoPerson().put(item.getId(), item);
-        getPersonIDtoPersonPhone().put(item.getId(), item.getPhoneNumber());
-        showNotification("The person " +item.getName() +" is added to phonebook");
+        if(isPhoneNumberUnique(item.getPhoneNumber())) {
+            getIDtoPerson().put(item.getId(), item);
+            getIDtoPhone().put(item.getId(), item.getPhoneNumber());
+            showNotification("The person " +item.getName() +" is added to phonebook");
+        } else {
+            showNotification("Phone number must be unique. The person is not added to Phonebook");
+        }
     }
 
-    private static synchronized void updatePerson(Person item) {
-        int oldNumber = getPersonIDtoPersonPhone().get(item.getId());
+    public static synchronized void updatePerson(Person item) {
+        int oldNumber = getIDtoPhone().get(item.getId());
         if(oldNumber == item.getPhoneNumber() || isPhoneNumberUnique(item.getPhoneNumber())) {
-            getPersonIDtoPersonPhone().replace(item.getId(), oldNumber, item.getPhoneNumber());
             item.setPhoneNumber(item.getPhoneNumber());
+            getIDtoPerson().put(item.getId(), item);
+            getIDtoPhone().put(item.getId(), item.getPhoneNumber());
             showNotification("The person's information is updated");
         }
         else {
@@ -46,11 +37,11 @@ public class PhoneBookManager {
     }
 
     public static boolean isPhoneNumberUnique(int phoneNumber) {
-        return !getPersonIDtoPersonPhone().containsValue(phoneNumber);
+        return !getIDtoPhone().containsValue(phoneNumber);
     }
 
     public static boolean isIDUnique(int id) {
-        return !getPersonIDtoPersonPhone().containsKey(id);
+        return !getIDtoPhone().containsKey(id);
     }
 
     private static void showNotification(String message) {

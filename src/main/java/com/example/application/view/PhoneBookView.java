@@ -17,6 +17,7 @@ import com.vaadin.flow.data.provider.CallbackDataProvider;
 import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
+
 import java.util.*;
 
 @Route("")
@@ -24,17 +25,32 @@ public class PhoneBookView extends Div {
     private final Crud<Person> crud;
     private Grid<Person> grid;
     private TextField nameFilter, lastNameFilter, emailFilter;
+    private boolean isEditMode = false;
 
     public PhoneBookView() {
         grid = new Grid<>(Person.class );
         crud = new Crud<>(Person.class, grid, createEditor());
         setupGrid();
-        crud.addSaveListener(e -> PhoneBookManager.saveOrUpdatePerson(e.getItem()));
-        crud.addDeleteListener(e -> PhoneBookManager.removePerson(e.getItem()));
         Crud.addEditColumn(grid);
+        crud.addEditListener(e -> {
+            isEditMode = true;
+        });
+        crud.addSaveListener(e -> {
+            if (isEditMode) {
+                PhoneBookManager.updatePerson(e.getItem());
+            }
+            else {
+                PhoneBookManager.addPerson(e.getItem());
+            }
+            isEditMode = false;
+        });
+        crud.addDeleteListener(e -> PhoneBookManager.removePerson(e.getItem()));
+
         prepareFilterFields();
         add(crud);
         PersonDataProvider.getPersonDataProvider();
+        setHeightFull();
+        setWidthFull();
     }
 
     private CrudEditor<Person> createEditor() {
@@ -69,7 +85,7 @@ public class PhoneBookView extends Div {
 
     private void setupGrid() {
 
-        crud.setDataProvider(DataProvider.ofCollection(PersonDataStorage.getPersonIDtoPerson().values()));
+        crud.setDataProvider(DataProvider.ofCollection(PersonDataStorage.getIDtoPerson().values()));
 
         grid = crud.getGrid();
         grid.addItemDoubleClickListener(event -> crud.edit(event.getItem(),
@@ -92,7 +108,7 @@ public class PhoneBookView extends Div {
                         query -> {
                             int offset = query.getOffset();
                             int limit = query.getLimit();
-                            List<Person> allPersons = new ArrayList<>(PersonDataStorage.getPersonIDtoPerson().values()).subList(offset, offset + limit);
+                            List<Person> allPersons = new ArrayList<>(PersonDataStorage.getIDtoPerson().values()).subList(offset, offset + limit);
                             return allPersons.stream();
                         },
                         query -> PersonService.getPersonIDToPersonMapSize()
@@ -131,7 +147,7 @@ public class PhoneBookView extends Div {
         CallbackDataProvider<Person, Void> dataProvider = DataProvider
                 .fromFilteringCallbacks(
                         query -> {
-                            List<Person> filteredPersons = PersonDataStorage.getPersonIDtoPerson().values().stream()
+                            List<Person> filteredPersons = PersonDataStorage.getIDtoPerson().values().stream()
                                     .filter(person -> {
                                         boolean nameMatch = person.getName().toLowerCase().contains(nameFilterText);
                                         boolean lastNameMatch = person.getLastName().toLowerCase().contains(lastNameFilterText);
@@ -145,7 +161,7 @@ public class PhoneBookView extends Div {
                             return filteredPersons.stream();
                         },
                         query -> {
-                            long totalCount = PersonDataStorage.getPersonIDtoPerson().values().stream()
+                            long totalCount = PersonDataStorage.getIDtoPerson().values().stream()
                                     .filter(person -> {
                                         boolean nameMatch = person.getName().toLowerCase().contains(nameFilterText);
                                         boolean lastNameMatch = person.getLastName().toLowerCase().contains(lastNameFilterText);
