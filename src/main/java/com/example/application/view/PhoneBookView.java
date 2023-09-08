@@ -33,6 +33,7 @@ public class PhoneBookView extends Div {
         crud = new Crud<>(Person.class, grid, createEditor());
         setupGrid();
         Crud.addEditColumn(grid);
+
         crud.addCancelListener(e -> {
             isEditMode = false;
         });
@@ -42,7 +43,6 @@ public class PhoneBookView extends Div {
         });
 
         crud.addSaveListener(e -> {
-
             if (isEditMode) {
                 PhoneBookManager.updatePerson(e.getItem());
             }
@@ -50,8 +50,6 @@ public class PhoneBookView extends Div {
                 PhoneBookManager.addPerson(e.getItem());
             }
             isEditMode = false;
-
-
         });
 
         crud.addDeleteListener(e -> {
@@ -62,8 +60,6 @@ public class PhoneBookView extends Div {
         prepareFilterFields();
         add(crud);
         PersonDataProvider.getPersonDataProvider();
-        setHeightFull();
-        setWidthFull();
     }
 
     private CrudEditor<Person> createEditor() {
@@ -103,11 +99,9 @@ public class PhoneBookView extends Div {
         grid = crud.getGrid();
         grid.addItemDoubleClickListener(event -> crud.edit(event.getItem(),
                 Crud.EditMode.EXISTING_ITEM));
-        grid.setWidthFull();
-        grid.setHeightFull();
-        grid.setPageSize(100);
 
         List<String> visibleColumns = Arrays.asList("name", "lastName", "email");
+
         grid.getColumns().forEach(column -> {
             String key = column.getKey();
             if (!visibleColumns.contains(key)) {
@@ -129,7 +123,6 @@ public class PhoneBookView extends Div {
 
         grid.setPageSize(6);
         grid.setDataProvider(dataProvider);
-
         grid.setColumnOrder(grid.getColumnByKey("name"),
                 grid.getColumnByKey("lastName"),
                 grid.getColumnByKey("email"));
