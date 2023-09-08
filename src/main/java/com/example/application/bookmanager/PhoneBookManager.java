@@ -8,7 +8,7 @@ public class PhoneBookManager {
 
     public static synchronized void removePerson(Person item) {
         getIDtoPerson().remove(item.getId());
-        getIDtoPerson().remove(item.getId());
+        getIDtoPhone().remove(item.getId());
         showNotification("The person " +item.getName() +" is removed from phonebook");
     }
 
