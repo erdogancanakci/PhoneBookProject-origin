@@ -2,7 +2,7 @@ package com.example.application.view;
 
 import com.example.application.storage.PersonDataStorage;
 import com.example.application.data.Person;
-import com.example.application.person_util.PersonService;
+import com.example.application.personutil.PersonService;
 import com.example.application.data.PersonDataProvider;
 import com.example.application.bookmanager.PhoneBookManager;
 import com.vaadin.flow.component.crud.*;

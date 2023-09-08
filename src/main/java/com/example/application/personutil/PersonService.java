@@ -1,4 +1,4 @@
-package com.example.application.person_util;
+package com.example.application.personutil;
 
 import com.example.application.storage.PersonDataStorage;
 
