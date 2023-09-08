@@ -21,7 +21,7 @@ import java.util.*;
 
 @Route("")
 public class PhoneBookView extends Div {
-    private Crud<Person> crud;
+    private final Crud<Person> crud;
     private Grid<Person> grid;
     private TextField nameFilter, lastNameFilter, emailFilter;
 
@@ -68,6 +68,7 @@ public class PhoneBookView extends Div {
     }
 
     private void setupGrid() {
+
         crud.setDataProvider(DataProvider.ofCollection(PersonDataStorage.getPersonIDtoPerson().values()));
 
         grid = crud.getGrid();
@@ -75,6 +76,7 @@ public class PhoneBookView extends Div {
                 Crud.EditMode.EXISTING_ITEM));
         grid.setWidthFull();
         grid.setHeightFull();
+        grid.setPageSize(100);
 
         List<String> visibleColumns = Arrays.asList("name", "lastName", "email");
         grid.getColumns().forEach(column -> {
