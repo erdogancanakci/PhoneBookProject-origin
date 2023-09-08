@@ -19,6 +19,7 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
 
 import java.util.*;
+import java.util.List;
 
 @Route("")
 public class PhoneBookView extends Div {
@@ -32,9 +33,11 @@ public class PhoneBookView extends Div {
         crud = new Crud<>(Person.class, grid, createEditor());
         setupGrid();
         Crud.addEditColumn(grid);
+
         crud.addEditListener(e -> {
             isEditMode = true;
         });
+
         crud.addSaveListener(e -> {
             if (isEditMode) {
                 PhoneBookManager.updatePerson(e.getItem());
@@ -43,8 +46,13 @@ public class PhoneBookView extends Div {
                 PhoneBookManager.addPerson(e.getItem());
             }
             isEditMode = false;
+
         });
-        crud.addDeleteListener(e -> PhoneBookManager.removePerson(e.getItem()));
+
+        crud.addDeleteListener(e -> {
+            PhoneBookManager.removePerson(e.getItem());
+            isEditMode = false;
+        });
 
         prepareFilterFields();
         add(crud);
