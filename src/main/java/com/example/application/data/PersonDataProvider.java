@@ -6,7 +6,6 @@ import java.util.Random;
 
 public class PersonDataProvider {
     private static final int personCount = 1000000;
-    private static final String ALPHABET_CAPITAL_EN = "ABCDEFGHIJKLMNOPQRSTUWXVYZ";
     private static final String ALPHABET_EN = "abcdefghijklmnopqrstuwxvyz";
     private static PersonDataProvider personDataProvider;
     private PersonDataProvider() {
