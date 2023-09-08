@@ -41,13 +41,9 @@ public class PhoneBookView extends Div {
     }
 
     private void addListener () {
-        crud.addCancelListener(e -> {
-            isEditMode = false;
-        });
+        crud.addCancelListener(e -> isEditMode = false);
 
-        crud.addEditListener(e -> {
-            isEditMode = true;
-        });
+        crud.addEditListener(e -> isEditMode = true);
 
         crud.addSaveListener(e -> {
             if (isEditMode) {
