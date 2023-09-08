@@ -12,7 +12,7 @@ public class PhoneBookManager {
                 addPerson(item);
             }
             else {
-                showNotification("phone number must be unique");
+                showNotification("Phone number must be unique");
             }
         }
         else {
@@ -23,13 +23,13 @@ public class PhoneBookManager {
     public static synchronized void removePerson(Person item) {
         getPersonIDtoPerson().remove(item.getId(), item);
         getPersonIDtoPersonPhone().remove(item.getId());
-        showNotification("the person " +item.getName() +" is removed from phonebook");
+        showNotification("The person " +item.getName() +" is removed from phonebook");
     }
 
     public static synchronized void addPerson(Person item) {
         getPersonIDtoPerson().put(item.getId(), item);
         getPersonIDtoPersonPhone().put(item.getId(), item.getPhoneNumber());
-        showNotification("the person " +item.getName() +" is added to phonebook");
+        showNotification("The person " +item.getName() +" is added to phonebook");
     }
 
     private static synchronized void updatePerson(Person item) {
@@ -37,11 +37,11 @@ public class PhoneBookManager {
         if(oldNumber == item.getPhoneNumber() || isPhoneNumberUnique(item.getPhoneNumber())) {
             getPersonIDtoPersonPhone().replace(item.getId(), oldNumber, item.getPhoneNumber());
             item.setPhoneNumber(item.getPhoneNumber());
-            showNotification("the person's information is updated");
+            showNotification("The person's information is updated");
         }
         else {
             item.setPhoneNumber(oldNumber);
-            showNotification("phone number must be unique");
+            showNotification("Phone number must be unique");
         }
     }
 
