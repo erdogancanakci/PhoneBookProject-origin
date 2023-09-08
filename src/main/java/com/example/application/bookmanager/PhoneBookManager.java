@@ -1,4 +1,4 @@
-package com.example.application.book_manager;
+package com.example.application.bookmanager;
 
 import com.example.application.data.Person;
 import com.vaadin.flow.component.notification.Notification;
