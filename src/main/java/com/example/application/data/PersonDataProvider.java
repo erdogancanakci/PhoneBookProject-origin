@@ -1,7 +1,6 @@
 package com.example.application.data;
 
 import com.example.application.storage.PersonDataStorage;
-
 import java.util.Random;
 
 public class PersonDataProvider {
