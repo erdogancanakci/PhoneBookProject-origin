@@ -94,7 +94,7 @@ public class PhoneBookView extends Div {
 
     private void setupGrid() {
 
-        crud.setDataProvider(DataProvider.ofCollection(PersonDataStorage.getIDtoPerson().values()));
+        crud.setDataProvider(DataProvider.ofCollection(PersonDataStorage.getIDtoPersonMap().values()));
 
         grid = crud.getGrid();
         grid.addItemDoubleClickListener(event -> crud.edit(event.getItem(),
@@ -115,7 +115,7 @@ public class PhoneBookView extends Div {
                         query -> {
                             int offset = query.getOffset();
                             int limit = query.getLimit();
-                            List<Person> allPersons = new ArrayList<>(PersonDataStorage.getIDtoPerson().values()).subList(offset, offset + limit);
+                            List<Person> allPersons = new ArrayList<>(PersonDataStorage.getIDtoPersonMap().values()).subList(offset, offset + limit);
                             return allPersons.stream();
                         },
                         query -> PersonService.getPersonIDToPersonMapSize()
@@ -153,7 +153,7 @@ public class PhoneBookView extends Div {
         CallbackDataProvider<Person, Void> dataProvider = DataProvider
                 .fromFilteringCallbacks(
                         query -> {
-                            List<Person> filteredPersons = PersonDataStorage.getIDtoPerson().values().stream()
+                            List<Person> filteredPersons = PersonDataStorage.getIDtoPersonMap().values().stream()
                                     .filter(person -> {
                                         boolean nameMatch = person.getName().toLowerCase().contains(nameFilterText);
                                         boolean lastNameMatch = person.getLastName().toLowerCase().contains(lastNameFilterText);
@@ -167,7 +167,7 @@ public class PhoneBookView extends Div {
                             return filteredPersons.stream();
                         },
                         query -> {
-                            long totalCount = PersonDataStorage.getIDtoPerson().values().stream()
+                            long totalCount = PersonDataStorage.getIDtoPersonMap().values().stream()
                                     .filter(person -> {
                                         boolean nameMatch = person.getName().toLowerCase().contains(nameFilterText);
                                         boolean lastNameMatch = person.getLastName().toLowerCase().contains(lastNameFilterText);

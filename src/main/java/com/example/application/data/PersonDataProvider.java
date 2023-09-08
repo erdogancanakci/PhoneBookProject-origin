@@ -34,8 +34,8 @@ public class PersonDataProvider {
             person.setPhoneNumber(getRandomNumber());
             person.setCountry(getRandomText());
 
-            PersonDataStorage.getIDtoPhone().put(person.getId(), person.getPhoneNumber());
-            PersonDataStorage.getIDtoPerson().put(person.getId(), person);
+            PersonDataStorage.getIDtoPhoneMap().put(person.getId(), person.getPhoneNumber());
+            PersonDataStorage.getIDtoPersonMap().put(person.getId(), person);
         }
     }
 
