@@ -10,7 +10,6 @@ import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.HeaderRow;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
@@ -18,9 +17,7 @@ import com.vaadin.flow.data.provider.CallbackDataProvider;
 import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
-
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Route("")
 public class PhoneBookView extends Div {
@@ -38,7 +35,6 @@ public class PhoneBookView extends Div {
         prepareFilterFields();
         add(crud);
         RandomPersonGenerator.getPersonGenerator();
-
     }
 
     private CrudEditor<Person> createEditor() {
@@ -73,15 +69,12 @@ public class PhoneBookView extends Div {
 
     private void setupGrid() {
         crud.setDataProvider(DataProvider.ofCollection(PersonDataStorage.getPersonIDtoPerson().values()));
+
         grid = crud.getGrid();
-
-
         grid.addItemDoubleClickListener(event -> crud.edit(event.getItem(),
                 Crud.EditMode.EXISTING_ITEM));
-
         grid.setWidthFull();
         grid.setHeightFull();
-
 
         List<String> visibleColumns = Arrays.asList("name", "lastName", "email");
         grid.getColumns().forEach(column -> {
@@ -92,20 +85,15 @@ public class PhoneBookView extends Div {
         });
   
 
-
-
         DataProvider<Person, Void> dataProvider =
                 DataProvider.fromCallbacks(
                         query -> {
-
                             int offset = query.getOffset();
-
                             int limit = query.getLimit();
                             List<Person> allPersons = new ArrayList<>(PersonDataStorage.getPersonIDtoPerson().values()).subList(offset, offset + limit);
                             return allPersons.stream();
-
                         },
-                        query -> PersonService.getPersonIDToPersonSize()
+                        query -> PersonService.getPersonIDToPersonMapSize()
                 );
 
         grid.setPageSize(6);
