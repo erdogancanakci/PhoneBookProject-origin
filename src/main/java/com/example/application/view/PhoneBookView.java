@@ -3,7 +3,7 @@ package com.example.application.view;
 import com.example.application.storage.PersonDataStorage;
 import com.example.application.data.Person;
 import com.example.application.person_util.PersonService;
-import com.example.application.person_util.RandomPersonGenerator;
+import com.example.application.data.PersonDataProvider;
 import com.example.application.book_manager.PhoneBookManager;
 import com.vaadin.flow.component.crud.*;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -34,7 +34,7 @@ public class PhoneBookView extends Div {
         Crud.addEditColumn(grid);
         prepareFilterFields();
         add(crud);
-        RandomPersonGenerator.getPersonGenerator();
+        PersonDataProvider.getPersonDataProvider();
     }
 
     private CrudEditor<Person> createEditor() {

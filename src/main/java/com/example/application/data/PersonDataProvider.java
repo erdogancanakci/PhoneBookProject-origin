@@ -1,23 +1,23 @@
-package com.example.application.person_util;
+package com.example.application.data;
 
 import com.example.application.storage.PersonDataStorage;
-import com.example.application.data.Person;
+
 import java.util.Random;
 
-public class RandomPersonGenerator {
+public class PersonDataProvider {
     private static final int personCount = 100000;
     private static final String ALPHABET_CAPITAL_EN = "ABCDEFGHIJKLMNOPQRSTUWXVYZ";
     private static final String ALPHABET_EN = "abcdefghijklmnopqrstuwxvyz";
-    private static RandomPersonGenerator randomPersonGenerator;
-    private RandomPersonGenerator() {
+    private static PersonDataProvider personDataProvider;
+    private PersonDataProvider() {
     }
 
-    public static RandomPersonGenerator getPersonGenerator()  {
-        if(randomPersonGenerator == null) {
-            randomPersonGenerator = new RandomPersonGenerator();
+    public static PersonDataProvider getPersonDataProvider()  {
+        if(personDataProvider == null) {
+            personDataProvider = new PersonDataProvider();
             createRandomPerson();
         }
-        return randomPersonGenerator;
+        return personDataProvider;
     }
 
     private static void createRandomPerson() {
