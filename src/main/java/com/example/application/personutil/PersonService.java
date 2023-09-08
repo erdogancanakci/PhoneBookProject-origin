@@ -1,7 +1,6 @@
 package com.example.application.personutil;
 
 import com.example.application.storage.PersonDataStorage;
-
 import java.util.ArrayList;
 
 public class PersonService {
