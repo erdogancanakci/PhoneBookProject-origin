@@ -4,7 +4,7 @@ import com.example.application.storage.PersonDataStorage;
 import java.util.Random;
 
 public class PersonDataProvider {
-    private static final int personCount = 100;
+    private static final int personCount = 100000;
     private static final String ALPHABET_EN = "abcdefghijklmnopqrstuwxvyz";
     private static PersonDataProvider personDataProvider;
     private PersonDataProvider() {

@@ -120,7 +120,6 @@ public class PhoneBookView extends Div {
                         query -> PersonService.getPersonIDToPersonMapSize()
                 );
 
-        grid.setPageSize(6);
         grid.setDataProvider(dataProvider);
         grid.setColumnOrder(grid.getColumnByKey("name"),
                 grid.getColumnByKey("lastName"),
