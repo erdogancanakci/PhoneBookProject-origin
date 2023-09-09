@@ -20,6 +20,7 @@ public class PhoneBookManager {
         int oldNumber = getIdToPersonPhoneMap().get(item.getId());
         if(getPhoneNumberSet().add(item.getPhoneNumber()) || (oldNumber == item.getPhoneNumber())) {
             getPhoneNumberSet().remove(oldNumber);
+            getPhoneNumberSet().add(item.getPhoneNumber()); // needed because if oldNumber == currenNumber, it is removed
             showNotification("The person's information is updated");
         }
         else {
