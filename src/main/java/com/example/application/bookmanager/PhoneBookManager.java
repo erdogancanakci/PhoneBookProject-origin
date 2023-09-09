@@ -20,15 +20,9 @@ public class PhoneBookManager {
         int oldNumber = getIdToPersonPhoneMap().get(item.getId());
         if(getPhoneNumberSet().add(item.getPhoneNumber()) || (oldNumber == item.getPhoneNumber())) {
             getPhoneNumberSet().remove(oldNumber);
-            getIdToPersonMap().remove(item.getId());
-            getIdToPersonPhoneMap().remove(item.getId());
-
-            getIdToPersonPhoneMap().put(item.getId(), item.getPhoneNumber());
-            getIdToPersonMap().put(item.getId(), item);
             showNotification("The person's information is updated");
         }
         else {
-            getPhoneNumberSet().remove(item.getPhoneNumber());
             item.setPhoneNumber(oldNumber);
             showNotification("Phone number must be unique");
         }
@@ -41,10 +35,9 @@ public class PhoneBookManager {
             showNotification("The person " +item.getName() +" is removed from phonebook");
         }
         else {
-            showNotification("the person alredy deleted");
+            showNotification("The person alredy deleted");
         }
     }
-
 
     private static void showNotification(String message) {
         Notification.show(message, 5000, Notification.Position.MIDDLE);

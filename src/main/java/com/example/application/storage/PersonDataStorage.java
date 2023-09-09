@@ -9,7 +9,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public class PersonDataStorage {
     private static final Map<Integer, Person> idToPersonMap = new ConcurrentHashMap<>();
     private static final Map<Integer, Integer> idToPersonPhoneMap = new ConcurrentHashMap<>();
-
     private static final HashSet<Integer> phoneNumberSet = new HashSet<>();
 
     public static HashSet<Integer> getPhoneNumberSet() {
@@ -21,5 +20,4 @@ public class PersonDataStorage {
     public static Map<Integer, Person> getIdToPersonMap() {
         return idToPersonMap;
     }
-
 }
