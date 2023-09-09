@@ -19,8 +19,10 @@ public class PhoneBookManager {
     public static synchronized void updatePerson(Person item) {
         int oldNumber = getIdToPersonPhoneMap().get(item.getId());
         if(getPhoneNumberSet().add(item.getPhoneNumber()) || (oldNumber == item.getPhoneNumber())) {
-            getPhoneNumberSet().remove(oldNumber);
-            getPhoneNumberSet().add(item.getPhoneNumber()); // needed because if oldNumber == currenNumber, it is removed
+            if(oldNumber != item.getPhoneNumber()) {
+                getPhoneNumberSet().remove(oldNumber);
+                getIdToPersonPhoneMap().replace(item.getId(), oldNumber, item.getPhoneNumber());
+            }
             showNotification("The person's information is updated");
         }
         else {
