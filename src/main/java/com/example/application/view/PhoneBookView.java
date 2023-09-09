@@ -75,17 +75,17 @@ public class PhoneBookView extends Div {
         Binder<Person> binder = new Binder<>(Person.class);
         binder.forField(name).asRequired("Name must be entered").bind(Person::getName,
                 Person::setName);
-        binder.forField(lastName).asRequired("last name must be entered").bind(Person::getLastName,
+        binder.forField(lastName).asRequired("Last name must be entered").bind(Person::getLastName,
                 Person::setLastName);
-        binder.forField(street).asRequired("street must be entered").bind(Person::getStreet,
+        binder.forField(street).asRequired("Street must be entered").bind(Person::getStreet,
                 Person::setStreet);
-        binder.forField(city).asRequired("city must be entered").bind(Person::getCity,
+        binder.forField(city).asRequired("City must be entered").bind(Person::getCity,
                 Person::setCity);
-        binder.forField(country).asRequired("country must be entered").bind(Person::getCountry,
+        binder.forField(country).asRequired("Country must be entered").bind(Person::getCountry,
                 Person::setCountry);
         binder.forField(phoneNumber).asRequired().bind(Person::getPhoneNumber,
                 Person::setPhoneNumber);
-        binder.forField(email).asRequired("email must be entered").bind(Person::getEmail,
+        binder.forField(email).asRequired("Email must be entered").bind(Person::getEmail,
                 Person::setEmail);
 
         return new BinderCrudEditor<>(binder, form);
