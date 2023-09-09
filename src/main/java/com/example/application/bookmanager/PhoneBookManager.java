@@ -12,7 +12,7 @@ public class PhoneBookManager {
             getIdToPersonPhoneMap().put(item.getId(), item.getPhoneNumber());
             showNotification("The person " +item.getName() +" is added to phonebook");
         } else {
-            showNotification("Phone number must be unique. The person is not added to Phonebook");
+            showNotification("The phone number must be unique. The person is not added to Phonebook");
         }
     }
 
@@ -27,7 +27,7 @@ public class PhoneBookManager {
         }
         else {
             item.setPhoneNumber(oldNumber);
-            showNotification("Phone number must be unique");
+            showNotification("The phone number must be unique");
         }
     }
 
