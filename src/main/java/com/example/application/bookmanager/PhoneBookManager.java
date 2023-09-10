@@ -18,10 +18,11 @@ public class PhoneBookManager {
 
     public static synchronized void updatePerson(Person item) {
         int oldNumber = getIdToPersonPhoneMap().get(item.getId());
-        if(getPhoneNumberSet().add(item.getPhoneNumber()) || (oldNumber == item.getPhoneNumber())) {
-            if(oldNumber != item.getPhoneNumber()) {
+        int currentNumber = item.getPhoneNumber();
+        if(getPhoneNumberSet().add(currentNumber) || (oldNumber == currentNumber)) {
+            if(oldNumber != currentNumber) {
                 getPhoneNumberSet().remove(oldNumber);
-                getIdToPersonPhoneMap().replace(item.getId(), oldNumber, item.getPhoneNumber());
+                getIdToPersonPhoneMap().replace(item.getId(), oldNumber, currentNumber);
             }
             showNotification("The person's information is updated");
         }
