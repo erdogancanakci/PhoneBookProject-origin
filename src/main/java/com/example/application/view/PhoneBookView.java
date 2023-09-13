@@ -1,10 +1,10 @@
 package com.example.application.view;
 
+import com.example.application.data.PersonDataProvider;
 import com.example.application.manager.DBPersonManager;
 import com.example.application.repository.PersonDataRepository;
 import com.example.application.data.Person;
 import com.example.application.personutil.PersonService;
-import com.example.application.data.PersonDataProvider;
 import com.example.application.manager.PersonManager;
 import com.vaadin.flow.component.crud.*;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -22,6 +22,8 @@ import com.vaadin.flow.router.Route;
 import java.util.*;
 import java.util.List;
 
+import static com.example.application.repository.PersonDataRepository.getIdToPhoneMap;
+
 @Route("")
 public class PhoneBookView extends Div {
     private final Crud<Person> crud;
@@ -29,6 +31,7 @@ public class PhoneBookView extends Div {
     private TextField nameFilter, lastNameFilter, emailFilter;
     private boolean isEditMode = false;
     DBPersonManager dbPersonManager = new DBPersonManager();
+    PersonManager personManager = new PersonManager();
 
     public PhoneBookView() {
         grid = new Grid<>(Person.class );
@@ -39,28 +42,33 @@ public class PhoneBookView extends Div {
         addListener();
         prepareFilterFields();
         add(crud);
-        //PersonDataProvider.getPersonDataProvider(); //it is needed if it is the first time the running the application on your local
+        PersonDataProvider.getPersonDataProvider(); //it is needed if it is the first time the running the application on your local
         dbPersonManager.readPersonTable();
     }
 
     private void addListener () {
-        PersonManager phoneBookMGR = new PersonManager();
 
         crud.addCancelListener(e -> isEditMode = false);
         crud.addEditListener(e -> isEditMode = true);
 
         crud.addSaveListener(e -> {
             if (isEditMode) {
-                phoneBookMGR.updatePersonInPhonebook(e.getItem());
+                personManager.updatePersonInPhonebook(e.getItem());
             }
             else {
-                phoneBookMGR.addPersonToPhonebook(e.getItem());
+                personManager.addPersonToPhonebook(e.getItem());
             }
             isEditMode = false;
         });
 
         crud.addDeleteListener(e -> {
-            phoneBookMGR.removePersonFromPhonebook(e.getItem());
+            int oldNumber = getIdToPhoneMap().get(e.getItem().getId());
+            if(e.getItem().getPhoneNumber() == oldNumber) {
+                personManager.removePersonFromPhonebook(e.getItem());
+            } else {
+                e.getItem().setPhoneNumber(oldNumber);
+                personManager.removePersonFromPhonebook(e.getItem());
+            }
             isEditMode = false;
         });
     }
