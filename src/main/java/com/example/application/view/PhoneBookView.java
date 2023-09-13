@@ -1,10 +1,11 @@
 package com.example.application.view;
 
-import com.example.application.storage.PersonDataStorage;
+import com.example.application.manager.DBPersonManager;
+import com.example.application.repository.PersonDataRepository;
 import com.example.application.data.Person;
 import com.example.application.personutil.PersonService;
 import com.example.application.data.PersonDataProvider;
-import com.example.application.bookmanager.PhoneBookManager;
+import com.example.application.manager.PersonManager;
 import com.vaadin.flow.component.crud.*;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
@@ -27,6 +28,7 @@ public class PhoneBookView extends Div {
     private Grid<Person> grid;
     private TextField nameFilter, lastNameFilter, emailFilter;
     private boolean isEditMode = false;
+    DBPersonManager dbPersonManager = new DBPersonManager();
 
     public PhoneBookView() {
         grid = new Grid<>(Person.class );
@@ -37,26 +39,28 @@ public class PhoneBookView extends Div {
         addListener();
         prepareFilterFields();
         add(crud);
-        PersonDataProvider.getPersonDataProvider();
+        //PersonDataProvider.getPersonDataProvider(); //it is needed if it is the first time the running the application on your local
+        dbPersonManager.readPersonTable();
     }
 
     private void addListener () {
-        crud.addCancelListener(e -> isEditMode = false);
+        PersonManager phoneBookMGR = new PersonManager();
 
+        crud.addCancelListener(e -> isEditMode = false);
         crud.addEditListener(e -> isEditMode = true);
 
         crud.addSaveListener(e -> {
             if (isEditMode) {
-                PhoneBookManager.updatePerson(e.getItem());
+                phoneBookMGR.updatePersonInPhonebook(e.getItem());
             }
             else {
-                PhoneBookManager.addPerson(e.getItem());
+                phoneBookMGR.addPersonToPhonebook(e.getItem());
             }
             isEditMode = false;
         });
 
         crud.addDeleteListener(e -> {
-            PhoneBookManager.removePerson(e.getItem());
+            phoneBookMGR.removePersonFromPhonebook(e.getItem());
             isEditMode = false;
         });
     }
@@ -93,12 +97,31 @@ public class PhoneBookView extends Div {
 
     private void setupGrid() {
 
-        crud.setDataProvider(DataProvider.ofCollection(PersonDataStorage.getIdToPersonMap().values()));
+        crud.setDataProvider(DataProvider.ofCollection(PersonDataRepository.getIdToPersonMap().values()));
 
         grid = crud.getGrid();
         grid.addItemDoubleClickListener(event -> crud.edit(event.getItem(),
                 Crud.EditMode.EXISTING_ITEM));
 
+        setupGridColumns();
+        setupLazyLoading();
+    }
+
+    private void setupLazyLoading() {
+        DataProvider<Person, Void> dataProvider =
+                DataProvider.fromCallbacks(
+                        query -> {
+                            int offset = query.getOffset();
+                            int limit = query.getLimit();
+                            List<Person> allPersons = new ArrayList<>(PersonDataRepository.getIdToPersonMap().values()).subList(offset, offset + limit);
+                            return allPersons.stream();
+                        },
+                        query -> PersonService.getPersonIDToPersonMapSize()
+                );
+        grid.setDataProvider(dataProvider);
+    }
+
+    private void setupGridColumns() {
         List<String> visibleColumns = Arrays.asList("name", "lastName", "email");
 
         grid.getColumns().forEach(column -> {
@@ -107,20 +130,7 @@ public class PhoneBookView extends Div {
                 grid.removeColumn(column);
             }
         });
-  
 
-        DataProvider<Person, Void> dataProvider =
-                DataProvider.fromCallbacks(
-                        query -> {
-                            int offset = query.getOffset();
-                            int limit = query.getLimit();
-                            List<Person> allPersons = new ArrayList<>(PersonDataStorage.getIdToPersonMap().values()).subList(offset, offset + limit);
-                            return allPersons.stream();
-                        },
-                        query -> PersonService.getPersonIDToPersonMapSize()
-                );
-
-        grid.setDataProvider(dataProvider);
         grid.setColumnOrder(grid.getColumnByKey("name"),
                 grid.getColumnByKey("lastName"),
                 grid.getColumnByKey("email"));
@@ -151,7 +161,7 @@ public class PhoneBookView extends Div {
         CallbackDataProvider<Person, Void> dataProvider = DataProvider
                 .fromFilteringCallbacks(
                         query -> {
-                            List<Person> filteredPersons = PersonDataStorage.getIdToPersonMap().values().stream()
+                            List<Person> filteredPersons = PersonDataRepository.getIdToPersonMap().values().stream()
                                     .filter(person -> {
                                         boolean nameMatch = person.getName().toLowerCase().contains(nameFilterText);
                                         boolean lastNameMatch = person.getLastName().toLowerCase().contains(lastNameFilterText);
@@ -165,7 +175,7 @@ public class PhoneBookView extends Div {
                             return filteredPersons.stream();
                         },
                         query -> {
-                            long totalCount = PersonDataStorage.getIdToPersonMap().values().stream()
+                            long totalCount = PersonDataRepository.getIdToPersonMap().values().stream()
                                     .filter(person -> {
                                         boolean nameMatch = person.getName().toLowerCase().contains(nameFilterText);
                                         boolean lastNameMatch = person.getLastName().toLowerCase().contains(lastNameFilterText);

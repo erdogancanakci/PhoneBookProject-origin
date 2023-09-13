@@ -1,41 +1,50 @@
-package com.example.application.bookmanager;
+package com.example.application.manager;
 
 import com.example.application.data.Person;
 import com.vaadin.flow.component.notification.Notification;
-import static com.example.application.storage.PersonDataStorage.*;
 
-public class PhoneBookManager {
+import static com.example.application.repository.PersonDataRepository.*;
 
-    public static synchronized void addPerson(Person item) {
+public class PersonManager {
+    private final DBPersonManager dbPersonManager = new DBPersonManager();
+
+    public synchronized void addPersonToPhonebook(Person item) {
         if(getPhoneNumberSet().add(item.getPhoneNumber())) {
             getIdToPersonMap().put(item.getId(), item);
-            getIdToPersonPhoneMap().put(item.getId(), item.getPhoneNumber());
+            getIdToPhoneMap().put(item.getId(), item.getPhoneNumber());
+
+            dbPersonManager.addPersonToDB(item);
             showNotification("The person " +item.getName() +" is added to phonebook");
         } else {
             showNotification("The phone number must be unique. The person is not added to Phonebook");
         }
     }
 
-    public static synchronized void updatePerson(Person item) {
-        int oldNumber = getIdToPersonPhoneMap().get(item.getId());
+    public synchronized void updatePersonInPhonebook(Person item) {
+        int oldNumber = getIdToPhoneMap().get(item.getId());
         int currentNumber = item.getPhoneNumber();
         if(getPhoneNumberSet().add(currentNumber) || (oldNumber == currentNumber)) {
             if(oldNumber != currentNumber) {
                 getPhoneNumberSet().remove(oldNumber);
-                getIdToPersonPhoneMap().replace(item.getId(), oldNumber, currentNumber);
+                getIdToPhoneMap().replace(item.getId(), oldNumber, currentNumber);
             }
+
+            dbPersonManager.updatePersonInDB(item);
             showNotification("The person's information is updated");
         }
         else {
+            dbPersonManager.updatePersonInDBWithoutPhone(item);
             item.setPhoneNumber(oldNumber);
             showNotification("The phone number must be unique");
         }
     }
 
-    public static synchronized void removePerson(Person item) {
+    public synchronized void removePersonFromPhonebook(Person item) {
         if(getPhoneNumberSet().remove(item.getPhoneNumber())) {
             getIdToPersonMap().remove(item.getId(), item);
-            getIdToPersonPhoneMap().remove(item.getId(), item.getPhoneNumber());
+            getIdToPhoneMap().remove(item.getId(), item.getPhoneNumber());
+
+            dbPersonManager.removePersonFromDB(item);
             showNotification("The person " +item.getName() +" is removed from phonebook");
         }
         else {
@@ -43,7 +52,7 @@ public class PhoneBookManager {
         }
     }
 
-    private static void showNotification(String message) {
+    private void showNotification(String message) {
         Notification.show(message, 5000, Notification.Position.MIDDLE);
     }
 
