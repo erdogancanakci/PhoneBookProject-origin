@@ -62,13 +62,7 @@ public class PhoneBookView extends Div {
         });
 
         crud.addDeleteListener(e -> {
-            int oldNumber = getIdToPhoneMap().get(e.getItem().getId());
-            if(e.getItem().getPhoneNumber() == oldNumber) {
-                personManager.removePersonFromPhonebook(e.getItem());
-            } else {
-                e.getItem().setPhoneNumber(oldNumber);
-                personManager.removePersonFromPhonebook(e.getItem());
-            }
+            personManager.removePersonFromPhonebook(e.getItem());
             isEditMode = false;
         });
     }
