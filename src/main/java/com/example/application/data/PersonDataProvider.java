@@ -1,16 +1,20 @@
 package com.example.application.data;
 
-import com.example.application.storage.PersonDataStorage;
+import com.example.application.manager.DBPersonManager;
+import com.example.application.repository.PersonDataRepository;
+
+import java.sql.SQLException;
 import java.util.Random;
 
 public class PersonDataProvider {
-    private static final int personCount = 100000;
+    private static final int PERSON_COUNT = 10;
     private static final String ALPHABET_EN = "abcdefghijklmnopqrstuwxvyz";
     private static PersonDataProvider personDataProvider;
+    private static final DBPersonManager DB_PERSON_MANAGER = new DBPersonManager();
     private PersonDataProvider() {
     }
 
-    public static PersonDataProvider getPersonDataProvider()  {
+    public static PersonDataProvider getPersonDataProvider() {
         if(personDataProvider == null) {
             personDataProvider = new PersonDataProvider();
             createRandomPerson();
@@ -19,7 +23,7 @@ public class PersonDataProvider {
     }
 
     private static void createRandomPerson() {
-        createRandomPerson(personCount);
+        createRandomPerson(PERSON_COUNT);
     }
 
     private static void createRandomPerson(int count) {
@@ -33,9 +37,11 @@ public class PersonDataProvider {
             person.setPhoneNumber(getRandomNumber());
             person.setCountry(getRandomText());
 
-            if(PersonDataStorage.getPhoneNumberSet().add(person.getPhoneNumber())) {
-                PersonDataStorage.getIdToPersonMap().put(person.getId(), person);
-                PersonDataStorage.getIdToPersonPhoneMap().put(person.getId(), person.getPhoneNumber());
+            if(PersonDataRepository.getPhoneNumberSet().add(person.getPhoneNumber())) {
+                PersonDataRepository.getIdToPersonMap().put(person.getId(), person);
+                PersonDataRepository.getIdToPhoneMap().put(person.getId(), person.getPhoneNumber());
+
+                DB_PERSON_MANAGER.addPersonToDB(person);
             }
         }
     }

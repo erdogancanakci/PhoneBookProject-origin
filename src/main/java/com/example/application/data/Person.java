@@ -8,7 +8,7 @@ public class Person {
     private String country;
     private int phoneNumber;
     private String email;
-    private final int id;
+    private int id;
     private static int counter = 0;
 
     public Person () {
@@ -24,6 +24,10 @@ public class Person {
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.id = counter++;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getId() {

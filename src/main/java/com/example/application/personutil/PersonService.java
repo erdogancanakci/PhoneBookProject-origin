@@ -1,6 +1,6 @@
 package com.example.application.personutil;
 
-import com.example.application.storage.PersonDataStorage;
+import com.example.application.repository.PersonDataRepository;
 import java.util.ArrayList;
 
 public class PersonService {
@@ -8,7 +8,7 @@ public class PersonService {
     }
 
     public static int getPersonIDToPersonMapSize() {
-        return new ArrayList<>(PersonDataStorage.getIdToPersonMap().values()).size();
+        return new ArrayList<>(PersonDataRepository.getIdToPersonMap().values()).size();
     }
 
 }
