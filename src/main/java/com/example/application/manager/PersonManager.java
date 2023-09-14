@@ -7,6 +7,33 @@ import static com.example.application.repository.PersonDataRepository.*;
 
 public class PersonManager {
     private final DBPersonManager dbPersonManager = new DBPersonManager();
+    private boolean addedCheck = false;
+    private boolean updatedCheck = false;
+    private boolean deletedCheck = false;
+
+    public void setAddedCheck(boolean addedCheck) {
+        this.addedCheck = addedCheck;
+    }
+
+    public void setUpdatedCheck(boolean updatedCheck) {
+        this.updatedCheck = updatedCheck;
+    }
+
+    public void setDeletedCheck(boolean deletedCheck) {
+        this.deletedCheck = deletedCheck;
+    }
+
+    public boolean isPersonAdded() {
+        return addedCheck;
+    }
+
+    public boolean isPersonUpdated() {
+        return updatedCheck;
+    }
+
+    public boolean isPersonDeleted() {
+        return deletedCheck;
+    }
 
     public synchronized void addPersonToPhonebook(Person item) {
         if(getPhoneNumberSet().add(item.getPhoneNumber())) {
@@ -14,9 +41,7 @@ public class PersonManager {
             getIdToPhoneMap().put(item.getId(), item.getPhoneNumber());
 
             dbPersonManager.addPersonToDB(item);
-            showNotification("The person " +item.getName() +" is added to phonebook");
-        } else {
-            showNotification("The phone number must be unique. The person is not added to Phonebook");
+            addedCheck = true;
         }
     }
 
@@ -30,12 +55,11 @@ public class PersonManager {
             }
 
             dbPersonManager.updatePersonInDB(item);
-            showNotification("The person's information is updated");
+            updatedCheck = true;
         }
         else {
             dbPersonManager.updatePersonInDBWithoutPhone(item);
             item.setPhoneNumber(oldNumber);
-            showNotification("The phone number must be unique");
         }
     }
 
@@ -45,15 +69,7 @@ public class PersonManager {
             getIdToPhoneMap().remove(item.getId(), item.getPhoneNumber());
 
             dbPersonManager.removePersonFromDB(item);
-            showNotification("The person " +item.getName() +" is removed from phonebook");
-        }
-        else {
-            showNotification("The person alredy deleted");
+            deletedCheck = true;
         }
     }
-
-    private void showNotification(String message) {
-        Notification.show(message, 5000, Notification.Position.MIDDLE);
-    }
-
 }
