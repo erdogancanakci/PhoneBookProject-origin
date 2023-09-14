@@ -78,6 +78,7 @@ public class PhoneBookView extends Div {
         });
 
         crud.addDeleteListener(e -> {
+
             int oldNumber = getIdToPhoneMap().get(e.getItem().getId());
             if(e.getItem().getPhoneNumber() == oldNumber) {
                 personManager.removePersonFromPhonebook(e.getItem());
@@ -91,6 +92,7 @@ public class PhoneBookView extends Div {
                 Notification.show("The person alredy deleted", 5000, Notification.Position.MIDDLE);
             }
             personManager.setDeletedCheck(false);
+
             isEditMode = false;
         });
     }
