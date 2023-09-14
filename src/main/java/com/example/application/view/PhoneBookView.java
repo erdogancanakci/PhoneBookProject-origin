@@ -11,6 +11,8 @@ import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.HeaderRow;
 import com.vaadin.flow.component.html.Div;
+
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
@@ -42,8 +44,10 @@ public class PhoneBookView extends Div {
         addListener();
         prepareFilterFields();
         add(crud);
-        PersonDataProvider.getPersonDataProvider(); //it is needed if it is the first time the running the application on your local
         dbPersonManager.readPersonTable();
+        if(getIdToPhoneMap().isEmpty()) {
+            PersonDataProvider.getPersonDataProvider();
+        }
     }
 
     private void addListener () {
@@ -54,15 +58,41 @@ public class PhoneBookView extends Div {
         crud.addSaveListener(e -> {
             if (isEditMode) {
                 personManager.updatePersonInPhonebook(e.getItem());
+                if (personManager.isPersonUpdated()) {
+                    Notification.show("The person's information is updated", 5000, Notification.Position.MIDDLE);
+                } else {
+                    Notification.show("The phone number must be unique", 5000, Notification.Position.MIDDLE);
+                }
+                personManager.setUpdatedCheck(false);
             }
             else {
                 personManager.addPersonToPhonebook(e.getItem());
+                if (personManager.isPersonAdded()) {
+                    Notification.show("The person " +e.getItem().getName() +" is added to phonebook", 5000, Notification.Position.MIDDLE);
+                } else {
+                    Notification.show("The phone number must be unique. The person is not added to Phonebook", 5000, Notification.Position.MIDDLE);
+                }
+               personManager.setAddedCheck(false);
             }
             isEditMode = false;
         });
 
         crud.addDeleteListener(e -> {
-            personManager.removePersonFromPhonebook(e.getItem());
+
+            int oldNumber = getIdToPhoneMap().get(e.getItem().getId());
+            if(e.getItem().getPhoneNumber() == oldNumber) {
+                personManager.removePersonFromPhonebook(e.getItem());
+            } else {
+                e.getItem().setPhoneNumber(oldNumber);
+                personManager.removePersonFromPhonebook(e.getItem());
+            }
+            if (personManager.isPersonDeleted()) {
+                Notification.show("The person " + e.getItem().getName()+ " is removed from phonebook", 5000, Notification.Position.MIDDLE);
+            } else {
+                Notification.show("The person alredy deleted", 5000, Notification.Position.MIDDLE);
+            }
+            personManager.setDeletedCheck(false);
+
             isEditMode = false;
         });
     }
